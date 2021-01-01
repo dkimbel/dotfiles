@@ -80,6 +80,7 @@
       htop
       interception-tools # caps2esc
       tree
+      wget
       which
     ];
   };
