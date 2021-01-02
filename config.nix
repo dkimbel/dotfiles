@@ -6,20 +6,29 @@
       ./hardware-configuration.nix
     ];
 
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
-  };
-
-  # Specify that we have a LUKS encrypted partition.
-  boot.initrd.luks.devices = {
-    root = {
-      device = "/dev/nvme0n1p2";
-      preLVM = true;
+  boot = {
+    loader = {
+      systemd-boot = {
+        enable = true;
+        # Favor security over backwards compatibility
+        # see nixpkgs/nixos/modules/system/boot/loader/systemd-boot/systemd-boot.nix
+        editor = false;
+      };
+      efi.canTouchEfiVariables = true;
+    };
+    # Specify that we have a LUKS encrypted partition.
+    initrd.luks.devices = {
+      root = {
+        device = "/dev/nvme0n1p2";
+        preLVM = true;
+      };
     };
   };
 
-  time.timeZone = "America/Phoenix";
+  environment.systemPackages = with pkgs; [
+    git
+    vim
+  ];
 
   networking = {
     hostName = "p51";
@@ -30,9 +39,35 @@
     networkmanager.enable = true;
   };
 
-  # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
+  nix = {
+    package = pkgs.nixFlakes;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  };
+
+  programs = {
+    ssh.startAgent = true;
+  };
+
+  security = {
+    hideProcessInformation = true;
+    protectKernelImage = true;
+  };
+
+  services = {
+    interception-tools.enable = true; # caps2esc
+  };
+
+  system = {
+    autoUpgrade = {
+      enable = true;
+      allowReboot = true;
+    };
+    stateVersion = "20.09";
+  };
+
+  time.timeZone = "America/Phoenix";
 
   users.users.dk = {
     createHome = true;
@@ -51,37 +86,4 @@
     ];
   };
 
-  environment.systemPackages = with pkgs; [
-    git
-    vim
-  ];
-
-  programs = {
-    ssh.startAgent = true;
-  };
-
-  services = {
-    interception-tools.enable = true; # caps2esc
-  };
-
-  # Configure automatic updates
-  system.autoUpgrade = {
-    enable = true;
-    allowReboot = true;
-  };
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "20.09"; # Did you read the comment?
-
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
 }
