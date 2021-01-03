@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ self, pkgs, ... }:
 
 {
   imports =
@@ -64,6 +64,7 @@
       enable = true;
       allowReboot = true;
     };
+    configurationRevision = pkgs.lib.mkIf (self ? rev) self.rev;
     stateVersion = "20.09";
   };
 

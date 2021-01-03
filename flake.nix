@@ -11,6 +11,7 @@
       p51 = pkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [ ./config.nix ];
+        specialArgs = { inherit self; };
       };
     };
   };
