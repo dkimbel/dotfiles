@@ -2,13 +2,13 @@
   description = "Daniel Kimbel's complete, customized NixOS configuration";
 
   inputs = {
-    nixpkgs = { url = "github:NixOS/nixpkgs/master"; };
+    pkgs = { url = "github:NixOS/nixpkgs/master"; };
   };
 
-  outputs = { self, nixpkgs }: {
+  outputs = { self, pkgs }: {
     nixosConfigurations = {
       # my personal laptop
-      p51 = nixpkgs.lib.nixosSystem {
+      p51 = pkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [ ./config.nix ];
       };
