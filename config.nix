@@ -64,7 +64,10 @@
       enable = true;
       allowReboot = true;
     };
-    configurationRevision = pkgs.lib.mkIf (self ? rev) self.rev;
+    configurationRevision =
+      if self ? rev
+      then self.rev
+      else throw "Git tree is dirty! Please stage and commit changes.";
     stateVersion = "20.09";
   };
 
