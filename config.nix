@@ -7,6 +7,13 @@
     ];
 
   boot = {
+    # Specify that we have a LUKS encrypted partition.
+    initrd.luks.devices = {
+      root = {
+        device = "/dev/nvme0n1p2";
+        preLVM = true;
+      };
+    };
     loader = {
       systemd-boot = {
         enable = true;
@@ -15,13 +22,6 @@
         editor = false;
       };
       efi.canTouchEfiVariables = true;
-    };
-    # Specify that we have a LUKS encrypted partition.
-    initrd.luks.devices = {
-      root = {
-        device = "/dev/nvme0n1p2";
-        preLVM = true;
-      };
     };
   };
 
@@ -40,10 +40,10 @@
   };
 
   nix = {
-    package = pkgs.nixFlakes;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+    package = pkgs.nixFlakes;
   };
 
   programs = {
@@ -79,7 +79,6 @@
     group = "users";
     home = "/home/dk";
     isNormalUser = true;
-    uid = 1000;
     packages = with pkgs; [
       efibootmgr
       htop
@@ -88,6 +87,7 @@
       wget
       which
     ];
+    uid = 1000;
   };
 
 }
