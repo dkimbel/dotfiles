@@ -17,10 +17,11 @@
     kernelPackages = pkgs.linuxPackages_5_10;
     loader = {
       systemd-boot = {
-        enable = true;
+        configurationLimit = 20;
         # Favor security over backwards compatibility
         # see nixpkgs/nixos/modules/system/boot/loader/systemd-boot/systemd-boot.nix
         editor = false;
+        enable = true;
       };
       efi.canTouchEfiVariables = true;
     };
