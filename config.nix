@@ -14,6 +14,7 @@
         preLVM = true;
       };
     };
+    kernelPackages = pkgs.linuxPackages_5_10;
     loader = {
       systemd-boot = {
         enable = true;
