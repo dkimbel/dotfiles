@@ -2,7 +2,7 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
       ./hardware-configuration.nix
     ];
 
@@ -14,8 +14,10 @@
         preLVM = true;
       };
     };
+    # Use a newer-than-stable Linux kernel
     kernelPackages = pkgs.linuxPackages_5_10;
     loader = {
+      efi.canTouchEfiVariables = true;
       systemd-boot = {
         configurationLimit = 20;
         # Favor security over backwards compatibility
@@ -23,10 +25,10 @@
         editor = false;
         enable = true;
       };
-      efi.canTouchEfiVariables = true;
     };
   };
 
+  # Packages available by default for all users: essentials only
   environment.systemPackages = with pkgs; [
     git
     vim
@@ -58,14 +60,14 @@
   };
 
   services = {
-    interception-tools.enable = true; # caps2esc
+    # Enable caps2esc, so Caps Lock key will map to ctrl when held and esc
+    # when tapped
+    interception-tools.enable = true;
   };
 
   system = {
-    autoUpgrade = {
-      enable = true;
-      allowReboot = true;
-    };
+    # add a "configurationRevision" key to the output of `nixos-version --json`,
+    # with the flake's git commit hash as its value
     configurationRevision =
       if self ? rev
       then self.rev
@@ -76,15 +78,12 @@
   time.timeZone = "America/Phoenix";
 
   users.users.dk = {
-    createHome = true;
     extraGroups = [ "wheel" "video" "audio" "disk" "networkmanager" ];
-    group = "users";
-    home = "/home/dk";
+    # isNormalUser removes the need for createHome, group, and home settings
     isNormalUser = true;
     packages = with pkgs; [
       efibootmgr
       htop
-      interception-tools # caps2esc
       tree
       wget
       which
