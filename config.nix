@@ -1,4 +1,4 @@
-{ self, pkgs, ... }:
+{ self, pkgs, nixpkgs, ... }:
 
 {
   imports =
@@ -48,6 +48,10 @@
       experimental-features = nix-command flakes
     '';
     package = pkgs.nixFlakes;
+    # Pin the nixpkgs flake to the nixpkgs I'm using to build my system. For
+    # more details, see the 'PINNING NIXPKGS' section near the end of
+    # https://www.tweag.io/blog/2020-07-31-nixos-flakes
+    registry.nixpkgs.flake = nixpkgs;
   };
 
   programs = {
