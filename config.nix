@@ -15,11 +15,11 @@
       };
     };
     # Use a newer-than-stable Linux kernel
-    kernelPackages = pkgs.linuxPackages_5_10;
+    kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot = {
-        configurationLimit = 20;
+        configurationLimit = 10;
         # Favor security over backwards compatibility
         # see nixpkgs/nixos/modules/system/boot/loader/systemd-boot/systemd-boot.nix
         editor = false;
