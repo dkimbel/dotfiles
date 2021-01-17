@@ -31,6 +31,7 @@
   # Packages available by default for all users: essentials only
   environment.systemPackages = with pkgs; [
     git
+    gptfdisk
     unzip
     vim
   ];
