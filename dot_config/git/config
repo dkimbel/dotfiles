@@ -1,0 +1,6 @@
+[user]
+        name = Daniel Kimbel
+        email = dk@danielkimbel.com
+        username = dkimbel
+[init]
+        defaultBranch = main

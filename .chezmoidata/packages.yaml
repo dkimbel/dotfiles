@@ -1,0 +1,12 @@
+packages:
+  darwin:
+    brews:
+      - 'git'
+      - 'ripgrep'
+      - 'tree'
+      - 'wget'
+    casks:
+      - 'appcleaner'
+      - 'font-sf-mono'
+      - 'font-symbols-only-nerd-font'
+      - 'wezterm'
