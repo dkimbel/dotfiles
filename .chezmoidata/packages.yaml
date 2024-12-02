@@ -1,12 +1,15 @@
 packages:
   darwin:
     brews:
+      - 'fd'
+      - 'fish'
+      - 'fisher'
       - 'git'
       - 'ripgrep'
+      - 'starship'
       - 'tree'
       - 'wget'
     casks:
       - 'appcleaner'
       - 'font-sf-mono'
-      - 'font-symbols-only-nerd-font'
       - 'wezterm'

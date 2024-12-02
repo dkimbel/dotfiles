@@ -1,0 +1,28 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env fish
+
+# Get the list of currently installed Fisher plugins
+set -l current_plugins (fisher list)
+
+# The list of plugins you want to have installed
+set -l desired_plugins {{- range .fish_plugins.darwin }} {{ . | quote }}{{- end }}
+
+# Uninstall plugins that are currently installed but not in the desired list
+for plugin in $current_plugins
+    if not contains -- $plugin $desired_plugins
+        echo "Uninstalling plugin: $plugin"
+        fisher remove $plugin
+    end
+end
+
+# Install or update desired plugins
+for plugin in $desired_plugins
+    if not contains -- $plugin $current_plugins
+        echo "Installing plugin: $plugin"
+        fisher install $plugin
+    else
+        echo "Updating plugin: $plugin"
+        fisher update $plugin
+    end
+end
+{{end -}}

@@ -1,0 +1,5 @@
+fish_plugins:
+  darwin:
+    - 'jorgebucaran/autopair.fish'
+    - 'jethrokuan/z'
+    - 'meaningful-ooo/sponge'
